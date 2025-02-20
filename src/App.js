@@ -8,11 +8,13 @@ import Grow from '@mui/material/Grow';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import passwordGenerator from './passwordGenerator';
+import { Password } from '@mui/icons-material';
 
 function App() {
   const [checked, setChecked] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const [sliderValue, setSliderValue] = useState(25);
+  const [password, setPassword] = useState('');
 
   const handleClick = () => {
     enqueueSnackbar('Copied to clipboard!', { variant: 'success' });
@@ -20,11 +22,14 @@ function App() {
 
   const handleClickVariant = (variant) => () => {
     enqueueSnackbar('This is a success message!', { variant });
+    navigator.clipboard.writeText(password);
   };
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
     passwordGenerator({ sliderValue: newValue });
+    const newPassword = passwordGenerator({ sliderValue: newValue });
+    setPassword(newPassword);
   };
 
   return (
@@ -40,12 +45,14 @@ function App() {
             <h1>React PasswordGenerator</h1>
             <Slider
               className="custom-slider"
-              defaultValue={25}
+              defaultValue={5}
+              Value
               aria-label="Default"
               valueLabelDisplay="auto"
               value={sliderValue}
               onChange={handleSliderChange}
             />
+            <h4>{password}</h4>
             <Button variant="contained" startIcon={<ContentCopyRoundedIcon />} onClick={handleClick}>
               Copy
             </Button>
