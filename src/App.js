@@ -24,6 +24,7 @@ function App() {
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
+    passwordGenerator({ sliderValue: newValue });
   };
 
   return (
