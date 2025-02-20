@@ -9,6 +9,7 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import passwordGenerator from './passwordGenerator';
 import { Password } from '@mui/icons-material';
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   const [checked, setChecked] = useState(true);
