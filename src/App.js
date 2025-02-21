@@ -21,7 +21,6 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import LoopOutlinedIcon from '@mui/icons-material/LoopOutlined';
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const darkTheme = createTheme({
   palette: {
@@ -38,7 +37,12 @@ function App() {
 
   const handleClick = () => {
     enqueueSnackbar('Copied to clipboard!', { variant: 'success' });
-    navigator.clipboard.writeText(password);
+    navigator.clipboard.writeText(password).then(() => {
+    console.log("Copied to clipboard!");
+  }).catch(err => {
+    console.error("Failed to copy: ", err);
+  });
+
   };
 
   const regeneratePassword = (event, newValue) => {
@@ -105,11 +109,9 @@ function App() {
               />
             </FormGroup>
             <br></br>
-            <CopyToClipboard text={password}>	 
               <Button variant="contained" startIcon={<ContentCopyRoundedIcon />} onClick={handleClick}>
                 Copy
               </Button>
-            </CopyToClipboard>
             <br></br>  
             <Button variant="contained" startIcon={<LoopOutlinedIcon />} onClick={regeneratePassword}>
               Regenerate
