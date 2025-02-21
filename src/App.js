@@ -8,8 +8,21 @@ import Grow from '@mui/material/Grow';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import passwordGenerator from './passwordGenerator';
-import { Password } from '@mui/icons-material';
-import { Analytics } from "@vercel/analytics/react"
+import Box from '@mui/material/Box';
+import FilledInput from '@mui/material/FilledInput';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
   const [checked, setChecked] = useState(true);
@@ -19,6 +32,7 @@ function App() {
 
   const handleClick = () => {
     enqueueSnackbar('Copied to clipboard!', { variant: 'success' });
+    navigator.clipboard.writeText(password);
   };
 
   const handleClickVariant = (variant) => () => {
@@ -28,7 +42,6 @@ function App() {
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
-    passwordGenerator({ sliderValue: newValue });
     const newPassword = passwordGenerator({ sliderValue: newValue });
     setPassword(newPassword);
   };
@@ -46,14 +59,20 @@ function App() {
             <h1>React PasswordGenerator</h1>
             <Slider
               className="custom-slider"
-              defaultValue={5}
-              Value
+              defaultValue={25}
               aria-label="Default"
               valueLabelDisplay="auto"
               value={sliderValue}
               onChange={handleSliderChange}
             />
-            <h4>{password}</h4>
+            <FormControl>
+              <InputLabel htmlFor="component-outlined" shrink>Password</InputLabel>
+              <OutlinedInput
+                id="component-outlined"
+                value={password}
+                label="Password"
+              />
+            </FormControl>
             <Button variant="contained" startIcon={<ContentCopyRoundedIcon />} onClick={handleClick}>
               Copy
             </Button>
@@ -73,7 +92,10 @@ function IntegrationNotistack() {
         horizontal: 'right',
       }}
     >
-      <App />
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
     </SnackbarProvider>
   );
 }
