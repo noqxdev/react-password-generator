@@ -41,7 +41,6 @@ function App() {
   };
 
   const regeneratePassword = (event, newValue) => {
-    
     enqueueSnackbar('Regenerated Password!', { variant: 'info' });
     const newPassword = passwordGenerator({ sliderValue, includeSpecialChars });
     setPassword(newPassword);
@@ -51,7 +50,7 @@ function App() {
     const newPassword = passwordGenerator({ sliderValue, includeSpecialChars });
     setPassword(newPassword);
   }
-  
+
   const handleClickVariant = (variant) => () => {
     enqueueSnackbar('This is a success message!', { variant });
   };
@@ -78,6 +77,16 @@ function App() {
         >
           <div>
             <img src={logo} className="App-logo" alt="logo" />
+            <h5>Password Generator</h5>
+                        <FormControl>
+              <InputLabel htmlFor="component-outlined" shrink>Password</InputLabel>
+              <OutlinedInput
+                id="component-outlined"
+                value={password}
+                label="Password"
+                className="outlined-input"
+              />
+            </FormControl>
             <Slider
               className="custom-slider"
               defaultValue={16}
@@ -88,14 +97,6 @@ function App() {
               value={sliderValue}
               onChange={handleSliderChange}
             />
-            <FormControl>
-              <InputLabel htmlFor="component-outlined" shrink>Password</InputLabel>
-              <OutlinedInput
-                id="component-outlined"
-                value={password}
-                label="Password"
-              />
-            </FormControl>
             <FormGroup>
               <FormControlLabel
                 control={<Checkbox checked={includeSpecialChars} onChange={handleCheckboxChange} />}
@@ -103,11 +104,10 @@ function App() {
               />
             </FormGroup>
             <br></br>
-            <br></br>
             <Button variant="contained" startIcon={<ContentCopyRoundedIcon />} onClick={handleClick}>
               Copy
             </Button>
-            <br></br> <br></br>
+            <br></br>  <br></br>
             <Button variant="contained" startIcon={<LoopOutlinedIcon />} onClick={regeneratePassword}>
               Regenerate
             </Button>

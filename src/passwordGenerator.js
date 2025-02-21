@@ -29,7 +29,7 @@ function passwordGenerator({ sliderValue, includeSpecialChars  }) {
             }
     }
     const stringVar = password.join('');
-    console.log("Generated Password: " + stringVar);
+    //console.log("Generated Password: " + stringVar);
     return stringVar;
 }   
 
