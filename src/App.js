@@ -39,7 +39,6 @@ function App() {
   const handleClick = () => {
     enqueueSnackbar('Copied to clipboard!', { variant: 'success' });
     navigator.clipboard.writeText(password);
-
   };
 
   const regeneratePassword = (event, newValue) => {
@@ -53,7 +52,10 @@ function App() {
     setPassword(newPassword);
   }
 
-  
+  const handleClickVariant = (variant) => () => {
+    enqueueSnackbar('This is a success message!', { variant });
+  };
+
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
     const newPassword = passwordGenerator({ sliderValue: newValue, includeSpecialChars });
@@ -77,7 +79,7 @@ function App() {
           <div>
             <img src={logo} className="App-logo" alt="logo" />
             <h5>Password Generator</h5>
-                        <FormControl>
+            <FormControl>
               <InputLabel htmlFor="component-outlined" shrink>Password</InputLabel>
               <OutlinedInput
                 id="component-outlined"
@@ -103,11 +105,11 @@ function App() {
               />
             </FormGroup>
             <br></br>
-            <CopyToClipboard text="password">	 
-            <Button variant="contained" startIcon={<ContentCopyRoundedIcon />} onClick={handleClick}>
-              Copy
+            <CopyToClipboard text={password}>	 
+              <Button variant="contained" startIcon={<ContentCopyRoundedIcon />} onClick={handleClick}>
+                Copy
               </Button>
-              </CopyToClipboard>
+            </CopyToClipboard>
             <br></br>  
             <Button variant="contained" startIcon={<LoopOutlinedIcon />} onClick={regeneratePassword}>
               Regenerate
