@@ -17,6 +17,10 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import LoopOutlinedIcon from '@mui/icons-material/LoopOutlined';
 
 const darkTheme = createTheme({
   palette: {
@@ -29,20 +33,38 @@ function App() {
   const { enqueueSnackbar } = useSnackbar();
   const [sliderValue, setSliderValue] = useState(25);
   const [password, setPassword] = useState('');
+  const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
 
   const handleClick = () => {
     enqueueSnackbar('Copied to clipboard!', { variant: 'success' });
     navigator.clipboard.writeText(password);
   };
 
+  const regeneratePassword = (event, newValue) => {
+    
+    enqueueSnackbar('Regenerated Password!', { variant: 'info' });
+    const newPassword = passwordGenerator({ sliderValue, includeSpecialChars });
+    setPassword(newPassword);
+  };
+
+  window.onload = function () {
+    const newPassword = passwordGenerator({ sliderValue, includeSpecialChars });
+    setPassword(newPassword);
+  }
+  
   const handleClickVariant = (variant) => () => {
     enqueueSnackbar('This is a success message!', { variant });
-    navigator.clipboard.writeText(password);
   };
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
-    const newPassword = passwordGenerator({ sliderValue: newValue });
+    const newPassword = passwordGenerator({ sliderValue: newValue, includeSpecialChars });
+    setPassword(newPassword);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setIncludeSpecialChars(event.target.checked);
+    const newPassword = passwordGenerator({ sliderValue, includeSpecialChars: event.target.checked });
     setPassword(newPassword);
   };
 
@@ -56,10 +78,11 @@ function App() {
         >
           <div>
             <img src={logo} className="App-logo" alt="logo" />
-            <h1>React PasswordGenerator</h1>
             <Slider
               className="custom-slider"
-              defaultValue={25}
+              defaultValue={16}
+              min={8}
+              max={64}
               aria-label="Default"
               valueLabelDisplay="auto"
               value={sliderValue}
@@ -73,8 +96,20 @@ function App() {
                 label="Password"
               />
             </FormControl>
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox checked={includeSpecialChars} onChange={handleCheckboxChange} />}
+                label="Special Characters !@#$%^&*()_+"
+              />
+            </FormGroup>
+            <br></br>
+            <br></br>
             <Button variant="contained" startIcon={<ContentCopyRoundedIcon />} onClick={handleClick}>
               Copy
+            </Button>
+            <br></br> <br></br>
+            <Button variant="contained" startIcon={<LoopOutlinedIcon />} onClick={regeneratePassword}>
+              Regenerate
             </Button>
           </div>
         </Grow>
@@ -86,7 +121,7 @@ function App() {
 function IntegrationNotistack() {
   return (
     <SnackbarProvider
-      maxSnack={5}
+      maxSnack={3}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'right',
